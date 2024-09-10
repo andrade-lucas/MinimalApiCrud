@@ -15,6 +15,7 @@ public static class EstudantesRotas
             var estudantes = await context
                 .Estudantes
                 .Where(x => x.Ativo)
+                .Select(x => new EstudanteDto(x.Id, x.Nome))
                 .ToListAsync();
 
             return Results.Ok(estudantes);
@@ -35,7 +36,9 @@ public static class EstudantesRotas
             await context.Estudantes.AddAsync(novoEstudante);
             await context.SaveChangesAsync();
 
-            return Results.Ok(novoEstudante);
+            var estudanteRetorno = new EstudanteDto(novoEstudante.Id, novoEstudante.Nome);
+
+            return Results.Ok(estudanteRetorno);
         });
 
         // Atualizar Nome do estudante.
@@ -53,7 +56,9 @@ public static class EstudantesRotas
 
             await context.SaveChangesAsync();
 
-            return Results.Ok(estudante);
+            var estudanteRetorno = new EstudanteDto(estudante.Id, estudante.Nome);
+
+            return Results.Ok(estudanteRetorno);
         });
     }
 }

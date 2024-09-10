@@ -6,7 +6,7 @@ namespace ApiCrud.Data;
 
 public class AppDbContext : DbContext
 {
-    private DbSet<Estudante> Estudantes { get; set; }
+    public DbSet<Estudante> Estudantes { get; set; }
 
     public AppDbContext()
     {
@@ -16,6 +16,9 @@ public class AppDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite("Data Source=Banco.sqlite");
+        optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+        optionsBuilder.EnableSensitiveDataLogging();
+        
         base.OnConfiguring(optionsBuilder);
     }
 }

@@ -17,4 +17,9 @@ public class Estudante
     {
         Nome = nome;
     }
+
+    public void Desativar()
+    {
+        Ativo = false;
+    }
 }

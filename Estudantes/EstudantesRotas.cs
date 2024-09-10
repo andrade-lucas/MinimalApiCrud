@@ -60,5 +60,19 @@ public static class EstudantesRotas
 
             return Results.Ok(estudanteRetorno);
         });
+
+        // Deletar estudante.
+        rotasEstudantes.MapDelete("{id:guid}", async (Guid id, AppDbContext context) => 
+        {
+            var estudante = await context.Estudantes.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (estudante == null) return Results.NotFound();
+
+            estudante.Desativar();
+
+            await context.SaveChangesAsync();
+
+            return Results.Ok();
+        });
     }
 }

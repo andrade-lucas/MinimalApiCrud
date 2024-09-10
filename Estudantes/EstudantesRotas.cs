@@ -21,8 +21,10 @@ public static class EstudantesRotas
         });
 
         // Cadastrar estudante.
-        rotasEstudantes.MapPost("", 
-            async (AddEstudanteRequest request, AppDbContext context) => 
+        rotasEstudantes.MapPost("", async (
+            AddEstudanteRequest request,
+            AppDbContext context
+        ) => 
         {
             var jaExiste = await context.Estudantes.AnyAsync(x => x.Nome == request.Nome);
 
@@ -34,6 +36,24 @@ public static class EstudantesRotas
             await context.SaveChangesAsync();
 
             return Results.Ok(novoEstudante);
+        });
+
+        // Atualizar Nome do estudante.
+        rotasEstudantes.MapPut("{id:guid}", async (
+            Guid id,
+            UpdateEstudanteRequest request,
+            AppDbContext context
+        ) =>
+        {
+            var estudante = await context.Estudantes.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (estudante == null) return Results.NotFound();
+
+            estudante.AtualizarNome(request.Nome);
+
+            await context.SaveChangesAsync();
+
+            return Results.Ok(estudante);
         });
     }
 }
